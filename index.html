@@ -1,75 +1,88 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MT EXCHANGE | JOGESH BHEEL</title>
-<meta name="description" content="MT EXCHANGE educational demo project created by JOGESH BHEEL.">
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}
-header{background:#151515;padding:22px;text-align:center;border-bottom:2px solid #c9a344}
-h1{color:#e6bd59;letter-spacing:3px;margin:0}
-.owner{color:#ddd;font-size:13px;margin-top:9px}
-main{max-width:650px;margin:auto;padding:18px}
-.notice{background:#29200e;color:#f3d88e;padding:14px;border:1px solid #94702b;border-radius:10px;font-size:13px}
-h2{color:#e5bd59;font-size:18px;margin-top:25px}
-.card{background:#171717;border:1px solid #6e5524;border-radius:12px;padding:18px;margin:12px 0}
-.price{font-size:25px;color:#e8c66f;font-weight:bold;margin-top:10px}
-.coins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{background:#d9b34f;border:0;padding:13px;border-radius:8px;font-weight:bold;width:100%;margin-top:10px}
-footer{text-align:center;padding:25px;color:#aaa;font-size:12px}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="MT EXCHANGE — educational demo exchange platform.">
+  <title>MT EXCHANGE | Demo Exchange</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-<h1>MT EXCHANGE</h1>
-<div class="owner">FOUNDER & CREATOR: JOGESH BHEEL</div>
-</header>
-<main>
-<div class="notice">
-<strong>EDUCATIONAL DEMO ONLY</strong><br>
-This is a learning project. No real trading, deposits, withdrawals or live market prices.
-</div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="MT Exchange home"><span class="brand-mark">MT</span><span>MT <b>EXCHANGE</b><small>LEARN • PRACTICE • EXPLORE</small></span></a>
+    <nav><a href="#markets">Markets</a><a href="#features">Features</a><a href="#about">About</a></nav>
+    <div class="nav-actions"><button class="btn btn-ghost" id="loginOpen">Log in</button><button class="btn btn-gold" id="signupOpen">Create account</button></div>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  </header>
 
-<h2>WELCOME TO MT EXCHANGE</h2>
-<div class="card">
-<div>Founder & Owner</div>
-<div class="price">JOGESH BHEEL</div>
-<div>Creator of MT EXCHANGE educational project.</div>
-</div>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span> EDUCATIONAL DEMO PLATFORM</div>
+        <h1>Trade the ideas.<br><em>Learn the market.</em></h1>
+        <p>Explore a clean, black-and-gold demo exchange experience. Practice with simulated balances — no real funds, deposits or withdrawals.</p>
+        <div class="hero-actions"><button class="btn btn-gold btn-large" id="heroSignup">Get started <span>↗</span></button><a class="btn btn-outline btn-large" href="#markets">Explore markets</a></div>
+        <div class="trust-line"><span>✦</span> Built by <b>JOGESH BHEEL</b> <span class="dot">•</span> Demo environment only</div>
+      </div>
+      <div class="hero-panel">
+        <div class="panel-top"><span>DEMO MARKET OVERVIEW</span><span class="live"><i></i> SIMULATED</span></div>
+        <div class="balance-label">Your demo portfolio</div>
+        <div class="balance" id="heroBalance">$10,000.00 <small>USD</small></div>
+        <div class="change positive">+2.45% <span>illustrative demo change</span></div>
+        <div class="sparkline"><svg viewBox="0 0 500 130" preserveAspectRatio="none" aria-label="Illustrative market line"><defs><linearGradient id="goldFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d6ad55" stop-opacity=".35"/><stop offset="1" stop-color="#d6ad55" stop-opacity="0"/></linearGradient></defs><path d="M0 105 C30 90 40 100 65 77 S100 88 130 62 S170 83 200 58 S245 70 275 40 S320 65 350 32 S390 54 420 20 S465 38 500 8 L500 130 L0 130Z" fill="url(#goldFill)"/><path d="M0 105 C30 90 40 100 65 77 S100 88 130 62 S170 83 200 58 S245 70 275 40 S320 65 350 32 S390 54 420 20 S465 38 500 8" fill="none" stroke="#d6ad55" stroke-width="3"/></svg></div>
+        <div class="panel-foot"><span>Sample performance chart</span><span>Not live prices</span></div>
+      </div>
+    </section>
 
-<h2>DEMO MARKET</h2>
-<div class="coins">
-<div class="card">
-<strong>BTC / USDT</strong>
-<div class="price">$67,420</div>
-<small>Sample value only</small>
-</div>
-<div class="card">
-<strong>ETH / USDT</strong>
-<div class="price">$3,520</div>
-<small>Sample value only</small>
-</div>
-</div>
+    <section class="stats">
+      <div><strong>24/7</strong><span>Practice anytime</span></div><div><strong>100%</strong><span>Simulated environment</span></div><div><strong>$10K</strong><span>Starting demo balance</span></div><div><strong>0</strong><span>Real-money deposits</span></div>
+    </section>
 
-<h2>VIRTUAL WALLET</h2>
-<div class="card">
-<div>Practice balance</div>
-<div class="price">₹1,00,000</div>
-<small>Virtual credits only</small>
-</div>
+    <section class="section" id="markets">
+      <div class="section-heading"><div><div class="eyebrow">EXPLORE THE DEMO</div><h2>Market <em>watchlist</em></h2></div><span class="muted">Illustrative values · Not live market data</span></div>
+      <div class="market-table">
+        <div class="market-row market-head"><span>ASSET</span><span>DEMO PRICE</span><span>24H DEMO</span><span></span></div>
+        <div class="market-row"><span class="asset"><b class="coin btc">₿</b><span><strong>Bitcoin</strong><small>BTC / USD</small></span></span><strong>$67,420.00</strong><span class="positive">+2.31%</span><button class="trade-btn" data-asset="Bitcoin">Practice</button></div>
+        <div class="market-row"><span class="asset"><b class="coin eth">◆</b><span><strong>Ethereum</strong><small>ETH / USD</small></span></span><strong>$3,520.00</strong><span class="positive">+1.84%</span><button class="trade-btn" data-asset="Ethereum">Practice</button></div>
+        <div class="market-row"><span class="asset"><b class="coin sol">◎</b><span><strong>Solana</strong><small>SOL / USD</small></span></span><strong>$148.20</strong><span class="negative">−0.62%</span><button class="trade-btn" data-asset="Solana">Practice</button></div>
+      </div>
+      <p class="fineprint">All prices and percentage changes above are fictional examples for interface demonstration.</p>
+    </section>
 
-<h2>ABOUT THE PROJECT</h2>
-<div class="card">
-MT EXCHANGE is an educational project created by JOGESH BHEEL to learn about website and app development.
-</div>
-</main>
-<footer>
-MT EXCHANGE © 2026<br>
-Founder & Creator: JOGESH BHEEL<br>
-Educational demo only.
-</footer>
+    <section class="section features" id="features">
+      <div class="section-heading"><div><div class="eyebrow">MADE FOR LEARNING</div><h2>Everything in one <em>place.</em></h2></div></div>
+      <div class="feature-grid">
+        <article class="feature-card"><span>◈</span><h3>Personal demo account</h3><p>Create a profile and explore your own simulated learning dashboard.</p></article>
+        <article class="feature-card"><span>▤</span><h3>Practice wallet</h3><p>Understand balances and sample portfolio activity without real funds.</p></article>
+        <article class="feature-card"><span>⌁</span><h3>Market watchlist</h3><p>Explore sample asset cards and learn how exchange interfaces work.</p></article>
+      </div>
+    </section>
+
+    <section class="about" id="about"><div class="about-mark">MT</div><div><div class="eyebrow">THE PROJECT</div><h2>Built to make learning <em>approachable.</em></h2><p>MT EXCHANGE is an independent educational demo project founded by <b>JOGESH BHEEL</b>. It is designed to demonstrate an exchange-style interface for learning and practice.</p></div></section>
+  </main>
+
+  <footer><a class="brand" href="#"><span class="brand-mark">MT</span><span>MT <b>EXCHANGE</b><small>LEARN • PRACTICE • EXPLORE</small></span></a><span>© <span id="year"></span> MT EXCHANGE · JOGESH BHEEL</span><span class="footer-note">Educational demo only. No real trading, investment services, deposits or withdrawals.</span></footer>
+
+  <dialog id="authDialog">
+    <form method="dialog" class="dialog-card" id="authForm">
+      <button class="close" aria-label="Close">×</button>
+      <div class="eyebrow">WELCOME TO MT EXCHANGE</div><h2 id="authTitle">Create your account</h2>
+      <p class="muted" id="authSubtitle">Start exploring with a demo profile.</p>
+      <label id="nameField">Full name<input id="fullName" autocomplete="name" placeholder="Your name"></label>
+      <label>Email address<input id="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+      <label>Password<input id="password" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters" required></label>
+      <button class="btn btn-gold btn-large full" id="authSubmit" type="submit">Create demo account</button>
+      <p class="fineprint" id="authNotice">Demo-only local account. Do not use a password you use elsewhere.</p>
+      <button class="switch-auth" type="button" id="switchAuth">Already have an account? Log in</button>
+    </form>
+  </dialog>
+  <dialog id="tradeDialog">
+    <form method="dialog" class="dialog-card"><button class="close">×</button><div class="eyebrow">PRACTICE MODE</div><h2 id="tradeTitle">Practice trade</h2><p class="muted">This is a visual demo only. No order is sent and no real asset is bought or sold.</p><label>Demo action<select id="tradeAction"><option>Buy (simulation)</option><option>Sell (simulation)</option></select></label><label>Demo amount (USD)<input id="tradeAmount" type="number" min="1" max="10000" value="100"></label><button class="btn btn-gold btn-large full" id="tradeConfirm">Show demo confirmation</button><p id="tradeResult" class="fineprint"></p></form>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
 </body>
 </html>
