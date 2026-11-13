@@ -1,3 +1,8 @@
+const SUPABASE_URL = 'https://zyyjebmsyeyxsuajputc.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_XiqTSfMWwDwoydTVno294A__HUQPKIV';
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 const $ = (s) => document.querySelector(s);
 const authDialog = $("#authDialog"), tradeDialog = $("#tradeDialog");
 let authMode = "signup";
