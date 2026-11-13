@@ -1,185 +1,236 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MT EXCHANGE</title>
-<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <style>
-body{margin:0;background:#0b1020;color:white;font-family:Arial}
-header{padding:18px;color:#f0b90b;font-size:23px;font-weight:bold}
-.controls{display:flex;flex-wrap:wrap;gap:8px;padding:12px}
-button,select{background:#19253b;color:white;border:1px solid #455570;padding:10px;border-radius:6px}
-#chart{height:420px;width:100%}
-.sub{height:150px;width:100%;display:none}
-p{padding:10px;color:#9eabc2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090909;color:#eee;font-family:Arial,sans-serif}
+:root{--gold:#d6ad55;--panel:#151515;--muted:#999}
+header{height:65px;background:#111;border-bottom:1px solid #29231a;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:5}
+.logo{font-size:21px;font-weight:bold;color:var(--gold)}
+.logo span{color:white}
+button{cursor:pointer;border:0;border-radius:7px;padding:11px 15px;font-weight:bold}
+.gold{background:var(--gold);color:#111}
+.darkbtn{background:#282828;color:white}
+nav{display:flex;gap:7px;overflow:auto;padding:12px;background:#101010;border-bottom:1px solid #292929}
+nav button{background:transparent;color:#aaa;white-space:nowrap}
+nav button.active{background:#302719;color:var(--gold)}
+main{max-width:1100px;margin:auto;padding:18px}
+.page{display:none}.page.active{display:block}
+h2{font-size:23px;margin:12px 0 18px}
+h3{font-size:16px;margin-bottom:14px;color:var(--gold)}
+.muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--panel);border:1px solid #292929;border-radius:12px;padding:17px;margin-bottom:14px}
+.big{font-size:25px;font-weight:bold;margin:9px 0}
+.goldtext{color:var(--gold)}
+.green{color:#18c78b}.red{color:#f05c65}
+.market{display:flex;justify-content:space-between;padding:14px 2px;border-bottom:1px solid #292929}
+.market:last-child{border:0}
+.chart{height:230px;width:100%;background:#0b0b0b;border-radius:8px}
+input{width:100%;padding:13px;background:#090909;border:1px solid #393939;border-radius:7px;color:white;margin:8px 0 15px}
+label{font-size:13px;color:#bbb}
+.actions{display:flex;gap:9px;margin-top:12px}
+.actions button{flex:1}
+.buy{background:#087e5b;color:white}.sell{background:#a52e37;color:white}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{text-align:left;padding:12px 7px;border-bottom:1px solid #292929}
+th{color:var(--gold)}
+footer{text-align:center;color:#777;padding:25px;font-size:12px}
+#login{position:fixed;inset:0;background:#090909;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px}
+.loginbox{width:100%;max-width:390px;background:#151515;border:1px solid #493b20;padding:25px;border-radius:15px}
+.notice{background:#282113;color:#e5c77f;padding:12px;border-radius:8px;font-size:12px;margin:12px 0}
+@media(max-width:650px){.grid{grid-template-columns:1fr 1fr}main{padding:13px}.big{font-size:20px}header{padding:0 12px}}
 </style>
 </head>
 <body>
-<header>MT EXCHANGE</header>
-<p>DEMO CHART • Simulated data only</p>
-<div class="controls">
-<select id="type">
-<option value="candle">Candlestick</option>
-<option value="line">Line</option>
-<option value="bar">Bar</option>
-<option value="area">Area</option>
-</select>
-<select id="tf">
-<option value="1">1 Minute</option>
-<option value="5">5 Minutes</option>
-<option value="15" selected>15 Minutes</option>
-<option value="60">1 Hour</option>
-<option value="240">4 Hours</option>
-<option value="D">1 Day</option>
-</select>
-<button id="sma">SMA</button>
-<button id="volume">Volume</button>
-<button id="rsi">RSI</button>
-<button id="macd">MACD</button>
-<button id="fit">Fit Chart</button>
+
+<div id="login">
+ <div class="loginbox">
+  <div class="logo">MT <span>EXCHANGE</span></div>
+  <p class="muted" style="margin:12px 0 22px">Your Demo Trading Platform</p>
+  <label>Your Name</label>
+  <input id="username" placeholder="Enter your name">
+  <button class="gold" style="width:100%" onclick="login()">ENTER DEMO ACCOUNT</button>
+  <div class="notice">Demo version only. No real money or real trading.</div>
+ </div>
 </div>
-<div id="chart"></div>
-<div id="rsiChart" class="sub"></div>
-<div id="macdChart" class="sub"></div>
-<p id="price">Loading chart...</p>
+
+<header>
+ <div class="logo">MT <span>EXCHANGE</span></div>
+ <div class="muted" id="userLabel">DEMO USER</div>
+</header>
+
+<nav>
+ <button class="active" onclick="showPage('home',this)">Home</button>
+ <button onclick="showPage('markets',this)">Markets</button>
+ <button onclick="showPage('trade',this)">Trade</button>
+ <button onclick="showPage('wallet',this)">Wallet</button>
+ <button onclick="showPage('orders',this)">Orders</button>
+ <button onclick="showPage('profile',this)">Profile</button>
+</nav>
+
+<main>
+<section class="page active" id="home">
+ <h2>Dashboard</h2>
+ <div class="grid">
+  <div class="card"><div class="muted">Demo Balance</div><div class="big goldtext" id="balanceTop">₹100,000</div></div>
+  <div class="card"><div class="muted">Open Orders</div><div class="big" id="orderCount">0</div></div>
+  <div class="card"><div class="muted">Account Type</div><div class="big goldtext">DEMO</div></div>
+ </div>
+ <div class="card">
+  <h3>Market Overview</h3>
+  <div class="market"><span>BTC / USDT</span><b class="green">$67,250.00</b></div>
+  <div class="market"><span>ETH / USDT</span><b class="green">$3,520.00</b></div>
+  <div class="market"><span>SOL / USDT</span><b class="red">$182.40</b></div>
+ </div>
+ <div class="card">
+  <h3>Welcome to MT EXCHANGE</h3>
+  <p class="muted">Explore the demo dashboard and practice using simulated orders. Prices shown here are sample values, not live market prices.</p>
+  <button class="gold" style="margin-top:15px" onclick="showPage('trade',document.querySelectorAll('nav button')[2])">Open Demo Trading</button>
+ </div>
+</section>
+
+<section class="page" id="markets">
+ <h2>Markets</h2>
+ <div class="card">
+  <div class="market"><div><b>BTC / USDT</b><div class="muted">Bitcoin</div></div><b>$67,250.00</b></div>
+  <div class="market"><div><b>ETH / USDT</b><div class="muted">Ethereum</div></div><b>$3,520.00</b></div>
+  <div class="market"><div><b>SOL / USDT</b><div class="muted">Solana</div></div><b>$182.40</b></div>
+  <div class="market"><div><b>BNB / USDT</b><div class="muted">BNB</div></div><b>$590.00</b></div>
+  <div class="market"><div><b>XRP / USDT</b><div class="muted">XRP</div></div><b>$0.62</b></div>
+ </div>
+</section>
+
+<section class="page" id="trade">
+ <h2>Demo Trading</h2>
+ <div class="card">
+  <div style="display:flex;justify-content:space-between;gap:10px">
+   <div><h3>BTC / USDT</h3><div class="muted">Sample price</div></div>
+   <div class="big goldtext">$67,250</div>
+  </div>
+  <canvas id="chart" class="chart"></canvas>
+  <div class="muted" style="margin-top:8px">Illustrative chart only. Not connected to an exchange.</div>
+ </div>
+ <div class="card">
+  <h3>Place Demo Order</h3>
+  <label>Asset</label>
+  <select id="asset" style="width:100%;padding:12px;background:#090909;color:white;border:1px solid #393939;border-radius:7px;margin:8px 0 15px">
+   <option>BTC / USDT</option><option>ETH / USDT</option><option>SOL / USDT</option>
+  </select>
+  <label>Demo Amount (₹)</label>
+  <input type="number" id="amount" placeholder="Example: 1000" min="1">
+  <div class="actions">
+   <button class="buy" onclick="placeOrder('BUY')">BUY</button>
+   <button class="sell" onclick="placeOrder('SELL')">SELL</button>
+  </div>
+  <div class="notice">Orders are simulated for practice. No real assets are bought or sold.</div>
+ </div>
+</section>
+
+<section class="page" id="wallet">
+ <h2>Demo Wallet</h2>
+ <div class="card">
+  <div class="muted">Available Demo Balance</div>
+  <div class="big goldtext" id="balanceWallet">₹100,000</div>
+  <p class="muted">Practice balance only. No deposits or withdrawals.</p>
+ </div>
+ <div class="card"><h3>Account Details</h3><div class="market"><span>Account</span><b>Demo</b></div><div class="market"><span>Currency</span><b>INR</b></div></div>
+</section>
+
+<section class="page" id="orders">
+ <h2>Order History</h2>
+ <div class="card" style="overflow:auto">
+  <table><thead><tr><th>Asset</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="orderTable"><tr><td colspan="4" class="muted">No demo orders yet</td></tr></tbody></table>
+ </div>
+</section>
+
+<section class="page" id="profile">
+ <h2>Profile</h2>
+ <div class="card">
+  <h3>My Account</h3>
+  <div class="market"><span>Name</span><b id="profileName">Demo User</b></div>
+  <div class="market"><span>Account Type</span><b class="goldtext">DEMO</b></div>
+  <div class="market"><span>Platform</span><b>MT EXCHANGE</b></div>
+  <button class="darkbtn" style="margin-top:15px" onclick="logout()">Logout</button>
+  <button class="darkbtn" style="margin-top:15px" onclick="resetDemo()">Reset Demo Account</button>
+ </div>
+</section>
+</main>
+
+<footer>MT EXCHANGE © 2026 | Demo Learning Platform</footer>
+
 <script>
-const $=id=>document.getElementById(id);
-const L=LightweightCharts;
-const chart=L.createChart($('chart'),{
- width:innerWidth,height:420,
- layout:{background:{color:'#0b1020'},textColor:'#ddd'},
- grid:{vertLines:{color:'#202c42'},horzLines:{color:'#202c42'}},
- timeScale:{timeVisible:true,borderColor:'#455570'},
- rightPriceScale:{borderColor:'#455570'}
-});
-let data=[],main,vol,smaLine;
-let showSma=true,showVol=true;
-function generate(){
- let tf=$('tf').value;
- let step=tf==='D'?86400:Number(tf)*60;
- let t=Math.floor(Date.now()/1000/step)*step-200*step;
- let price=65000,arr=[];
- for(let i=0;i<200;i++){
- let open=price;
- let close=Math.max(100,open+(Math.random()-.48)*180);
- arr.push({
- time:t+i*step,open,close,
- high:Math.max(open,close)+Math.random()*70,
- low:Math.min(open,close)-Math.random()*70,
- volume:Math.random()*500+30
- });
- price=close;
- }
- return arr;
+let balance=Number(localStorage.getItem('mtBalance')||100000);
+let orders=JSON.parse(localStorage.getItem('mtOrders')||'[]');
+let name=localStorage.getItem('mtName')||'';
+
+function login(){
+ const n=document.getElementById('username').value.trim();
+ if(!n){alert('Please enter your name');return}
+ name=n;localStorage.setItem('mtName',name);
+ document.getElementById('login').style.display='none';
+ update();
 }
-function average(){
- return data.map((x,i)=>{
- if(i<13)return null;
- return {time:x.time,value:data.slice(i-13,i+1).reduce((a,b)=>a+b.close,0)/14};
- }).filter(Boolean);
+function logout(){
+ document.getElementById('login').style.display='flex';
 }
-function draw(){
- data=generate();
- if(main)chart.removeSeries(main);
- if(vol)chart.removeSeries(vol);
- if(smaLine)chart.removeSeries(smaLine);
- let type=$('type').value;
- if(type==='candle'){
- main=chart.addSeries(L.CandlestickSeries,{
- upColor:'#16c784',downColor:'#ea3943',
- borderVisible:false,wickUpColor:'#16c784',
- wickDownColor:'#ea3943'
- });
- main.setData(data);
- }else if(type==='bar'){
- main=chart.addSeries(L.BarSeries,{
- upColor:'#16c784',downColor:'#ea3943'
- });
- main.setData(data);
- }else if(type==='area'){
- main=chart.addSeries(L.AreaSeries,{
- lineColor:'#f0b90b',topColor:'#66520b',
- bottomColor:'#0b1020'
- });
- main.setData(data.map(x=>({time:x.time,value:x.close})));
- }else{
- main=chart.addSeries(L.LineSeries,{color:'#f0b90b',lineWidth:2});
- main.setData(data.map(x=>({time:x.time,value:x.close})));
- }
- if(showVol){
- vol=chart.addSeries(L.HistogramSeries,{
- priceScaleId:'volume',
- priceFormat:{type:'volume'}
- });
- vol.priceScale().applyOptions({
- scaleMargins:{top:.82,bottom:0}
- });
- vol.setData(data.map(x=>({
- time:x.time,value:x.volume,
- color:x.close>=x.open?'#16c784':'#ea3943'
- })));
- }
- if(showSma){
- smaLine=chart.addSeries(L.LineSeries,{
- color:'#55a6ff',lineWidth:2,
- priceLineVisible:false
- });
- smaLine.setData(average());
- }
- chart.timeScale().fitContent();
- $('price').textContent='Last simulated price: '+data.at(-1).close.toFixed(2);
+function showPage(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ if(id==='trade')drawChart();
 }
-function rsiCalc(){
- let out=[],g=0,l=0;
- for(let i=1;i<data.length;i++){
- let d=data[i].close-data[i-1].close;
- g+=Math.max(d,0);l+=Math.max(-d,0);
- if(i>=14){
- let rs=l===0?100:g/l;
- out.push({time:data[i].time,value:100-100/(1+rs)});
- let old=data[i-13].close-data[i-14].close;
- g-=Math.max(old,0);l-=Math.max(-old,0);
- }
- }
- return out;
+function update(){
+ document.getElementById('balanceTop').textContent='₹'+balance.toLocaleString('en-IN');
+ document.getElementById('balanceWallet').textContent='₹'+balance.toLocaleString('en-IN');
+ document.getElementById('orderCount').textContent=orders.length;
+ document.getElementById('userLabel').textContent=name.toUpperCase();
+ document.getElementById('profileName').textContent=name;
+ const tbody=document.getElementById('orderTable');
+ tbody.innerHTML=orders.length?orders.slice().reverse().map(o=>`<tr><td>${o.asset}</td><td class="${o.type==='BUY'?'green':'red'}">${o.type}</td><td>₹${o.amount.toLocaleString('en-IN')}</td><td>Demo completed</td></tr>`).join(''):'<tr><td colspan="4">No demo orders yet</td></tr>';
+ localStorage.setItem('mtBalance',balance);
+ localStorage.setItem('mtOrders',JSON.stringify(orders));
 }
-let rsiChart,macdChart;
-function toggleRSI(){
- let el=$('rsiChart');
- el.style.display=el.style.display==='block'?'none':'block';
- if(el.style.display==='block'){
- if(!rsiChart){
- rsiChart=L.createChart(el,{width:innerWidth,height:150,
- layout:{background:{color:'#0b1020'},textColor:'#ddd'}});
- rsiChart.addSeries(L.LineSeries,{color:'#b58cff'}).setData(rsiCalc());
- }else rsiChart.applyOptions({width:innerWidth});
+function placeOrder(type){
+ const amount=Number(document.getElementById('amount').value);
+ if(!amount||amount<=0){alert('Enter a valid amount');return}
+ if(type==='BUY'&&amount>balance){alert('Not enough demo balance');return}
+ if(type==='BUY')balance-=amount;
+ if(type==='SELL')balance+=amount;
+ orders.push({asset:document.getElementById('asset').value,type,amount});
+ update();
+ alert(type+' demo order completed!');
+}
+function resetDemo(){
+ if(!confirm('Reset demo balance and orders?'))return;
+ balance=100000;orders=[];update();
+}
+function drawChart(){
+ const c=document.getElementById('chart');
+ if(!c)return;
+ const w=c.clientWidth,h=230,dpr=window.devicePixelRatio||1;
+ c.width=w*dpr;c.height=h*dpr;
+ const ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+ ctx.clearRect(0,0,w,h);
+ for(let y=25;y<h;y+=40){ctx.strokeStyle='#242424';ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+ let price=120;
+ for(let i=0;i<Math.floor(w/12);i++){
+  let open=price;price+=(Math.random()-.46)*13;
+  let close=price;
+  let x=8+i*12;
+  let color=close>=open?'#16bd82':'#ed5963';
+  ctx.strokeStyle=color;ctx.fillStyle=color;
+  ctx.beginPath();ctx.moveTo(x+4,Math.min(open,close)-Math.random()*10);ctx.lineTo(x+4,Math.max(open,close)+Math.random()*10);ctx.stroke();
+  ctx.fillRect(x,Math.min(open,close),8,Math.max(3,Math.abs(close-open)));
  }
 }
-function toggleMACD(){
- let el=$('macdChart');
- el.style.display=el.style.display==='block'?'none':'block';
- if(el.style.display==='block'&&!macdChart){
- macdChart=L.createChart(el,{width:innerWidth,height:150,
- layout:{background:{color:'#0b1020'},textColor:'#ddd'}});
- let c=data.map(x=>x.close);
- function ema(a,n){let k=2/(n+1),v=a[0];return a.map((x,i)=>v=i?x*k+v*(1-k):x)}
- let a=ema(c,12),b=ema(c,26);
- macdChart.addSeries(L.LineSeries,{color:'#55a6ff'}).setData(
- data.map((x,i)=>({time:x.time,value:a[i]-b[i]}))
- );
- }
-}
-$('type').onchange=draw;
-$('tf').onchange=draw;
-$('sma').onclick=()=>{showSma=!showSma;draw()};
-$('volume').onclick=()=>{showVol=!showVol;draw()};
-$('rsi').onclick=toggleRSI;
-$('macd').onclick=toggleMACD;
-$('fit').onclick=()=>chart.timeScale().fitContent();
-new ResizeObserver(()=>chart.applyOptions({width:$('chart').clientWidth})).observe($('chart'));
-draw();
+window.addEventListener('resize',drawChart);
+if(name){document.getElementById('login').style.display='none';update()}
 </script>
 </body>
 </html>
