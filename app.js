@@ -17,3 +17,27 @@ document.querySelectorAll(".trade-btn").forEach(b=>b.onclick=()=>{$("#tradeTitle
 $("#tradeConfirm").onclick=()=>{$("#tradeResult").textContent="Demo confirmation only. No transaction has taken place.";toast("Practice preview shown — no real trade executed.")};
 $("#menuBtn").onclick=()=>document.querySelector("nav").classList.toggle("open");
 if("serviceWorker" in navigator && location.protocol!=="file:"){navigator.serviceWorker.register("./sw.js").catch(()=>{});}
+// यूजर लॉगिन और वॉलेट बैलेंस चेक करने का फंक्शन
+async function checkUserAndWallet() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  
+  if (session) {
+    console.log("User logged in:", session.user.email);
+    
+    // डेटाबेस से वॉलेट बैलेंस फेच करें
+    const { data: wallet, error } = await supabaseClient
+      .from('wallets')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (wallet) {
+      console.log("Wallet Balance:", wallet.balance);
+    }
+  } else {
+    console.log("No user logged in.");
+  }
+}
+
+// पेज लोड होते ही चेक करें
+checkUserAndWallet();
