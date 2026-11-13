@@ -1,4 +1,4 @@
-<!doctype html>
+de<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -84,5 +84,190 @@
   </dialog>
   <div class="toast" id="toast" role="status"></div>
   <script src="app.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MT EXCHANGE</title>
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+body{margin:0;background:#0b1020;color:white;font-family:Arial}
+header{padding:18px;color:#f0b90b;font-size:23px;font-weight:bold}
+.controls{display:flex;flex-wrap:wrap;gap:8px;padding:12px}
+button,select{background:#19253b;color:white;border:1px solid #455570;padding:10px;border-radius:6px}
+#chart{height:420px;width:100%}
+.sub{height:150px;width:100%;display:none}
+p{padding:10px;color:#9eabc2}
+</style>
+</head>
+<body>
+<header>MT EXCHANGE</header>
+<p>DEMO CHART • Simulated data only</p>
+<div class="controls">
+<select id="type">
+<option value="candle">Candlestick</option>
+<option value="line">Line</option>
+<option value="bar">Bar</option>
+<option value="area">Area</option>
+</select>
+<select id="tf">
+<option value="1">1 Minute</option>
+<option value="5">5 Minutes</option>
+<option value="15" selected>15 Minutes</option>
+<option value="60">1 Hour</option>
+<option value="240">4 Hours</option>
+<option value="D">1 Day</option>
+</select>
+<button id="sma">SMA</button>
+<button id="volume">Volume</button>
+<button id="rsi">RSI</button>
+<button id="macd">MACD</button>
+<button id="fit">Fit Chart</button>
+</div>
+<div id="chart"></div>
+<div id="rsiChart" class="sub"></div>
+<div id="macdChart" class="sub"></div>
+<p id="price">Loading chart...</p>
+<script>
+const $=id=>document.getElementById(id);
+const L=LightweightCharts;
+const chart=L.createChart($('chart'),{
+ width:innerWidth,height:420,
+ layout:{background:{color:'#0b1020'},textColor:'#ddd'},
+ grid:{vertLines:{color:'#202c42'},horzLines:{color:'#202c42'}},
+ timeScale:{timeVisible:true,borderColor:'#455570'},
+ rightPriceScale:{borderColor:'#455570'}
+});
+let data=[],main,vol,smaLine;
+let showSma=true,showVol=true;
+function generate(){
+ let tf=$('tf').value;
+ let step=tf==='D'?86400:Number(tf)*60;
+ let t=Math.floor(Date.now()/1000/step)*step-200*step;
+ let price=65000,arr=[];
+ for(let i=0;i<200;i++){
+ let open=price;
+ let close=Math.max(100,open+(Math.random()-.48)*180);
+ arr.push({
+ time:t+i*step,open,close,
+ high:Math.max(open,close)+Math.random()*70,
+ low:Math.min(open,close)-Math.random()*70,
+ volume:Math.random()*500+30
+ });
+ price=close;
+ }
+ return arr;
+}
+function average(){
+ return data.map((x,i)=>{
+ if(i<13)return null;
+ return {time:x.time,value:data.slice(i-13,i+1).reduce((a,b)=>a+b.close,0)/14};
+ }).filter(Boolean);
+}
+function draw(){
+ data=generate();
+ if(main)chart.removeSeries(main);
+ if(vol)chart.removeSeries(vol);
+ if(smaLine)chart.removeSeries(smaLine);
+ let type=$('type').value;
+ if(type==='candle'){
+ main=chart.addSeries(L.CandlestickSeries,{
+ upColor:'#16c784',downColor:'#ea3943',
+ borderVisible:false,wickUpColor:'#16c784',
+ wickDownColor:'#ea3943'
+ });
+ main.setData(data);
+ }else if(type==='bar'){
+ main=chart.addSeries(L.BarSeries,{
+ upColor:'#16c784',downColor:'#ea3943'
+ });
+ main.setData(data);
+ }else if(type==='area'){
+ main=chart.addSeries(L.AreaSeries,{
+ lineColor:'#f0b90b',topColor:'#66520b',
+ bottomColor:'#0b1020'
+ });
+ main.setData(data.map(x=>({time:x.time,value:x.close})));
+ }else{
+ main=chart.addSeries(L.LineSeries,{color:'#f0b90b',lineWidth:2});
+ main.setData(data.map(x=>({time:x.time,value:x.close})));
+ }
+ if(showVol){
+ vol=chart.addSeries(L.HistogramSeries,{
+ priceScaleId:'volume',
+ priceFormat:{type:'volume'}
+ });
+ vol.priceScale().applyOptions({
+ scaleMargins:{top:.82,bottom:0}
+ });
+ vol.setData(data.map(x=>({
+ time:x.time,value:x.volume,
+ color:x.close>=x.open?'#16c784':'#ea3943'
+ })));
+ }
+ if(showSma){
+ smaLine=chart.addSeries(L.LineSeries,{
+ color:'#55a6ff',lineWidth:2,
+ priceLineVisible:false
+ });
+ smaLine.setData(average());
+ }
+ chart.timeScale().fitContent();
+ $('price').textContent='Last simulated price: '+data.at(-1).close.toFixed(2);
+}
+function rsiCalc(){
+ let out=[],g=0,l=0;
+ for(let i=1;i<data.length;i++){
+ let d=data[i].close-data[i-1].close;
+ g+=Math.max(d,0);l+=Math.max(-d,0);
+ if(i>=14){
+ let rs=l===0?100:g/l;
+ out.push({time:data[i].time,value:100-100/(1+rs)});
+ let old=data[i-13].close-data[i-14].close;
+ g-=Math.max(old,0);l-=Math.max(-old,0);
+ }
+ }
+ return out;
+}
+let rsiChart,macdChart;
+function toggleRSI(){
+ let el=$('rsiChart');
+ el.style.display=el.style.display==='block'?'none':'block';
+ if(el.style.display==='block'){
+ if(!rsiChart){
+ rsiChart=L.createChart(el,{width:innerWidth,height:150,
+ layout:{background:{color:'#0b1020'},textColor:'#ddd'}});
+ rsiChart.addSeries(L.LineSeries,{color:'#b58cff'}).setData(rsiCalc());
+ }else rsiChart.applyOptions({width:innerWidth});
+ }
+}
+function toggleMACD(){
+ let el=$('macdChart');
+ el.style.display=el.style.display==='block'?'none':'block';
+ if(el.style.display==='block'&&!macdChart){
+ macdChart=L.createChart(el,{width:innerWidth,height:150,
+ layout:{background:{color:'#0b1020'},textColor:'#ddd'}});
+ let c=data.map(x=>x.close);
+ function ema(a,n){let k=2/(n+1),v=a[0];return a.map((x,i)=>v=i?x*k+v*(1-k):x)}
+ let a=ema(c,12),b=ema(c,26);
+ macdChart.addSeries(L.LineSeries,{color:'#55a6ff'}).setData(
+ data.map((x,i)=>({time:x.time,value:a[i]-b[i]}))
+ );
+ }
+}
+$('type').onchange=draw;
+$('tf').onchange=draw;
+$('sma').onclick=()=>{showSma=!showSma;draw()};
+$('volume').onclick=()=>{showVol=!showVol;draw()};
+$('rsi').onclick=toggleRSI;
+$('macd').onclick=toggleMACD;
+$('fit').onclick=()=>chart.timeScale().fitContent();
+new ResizeObserver(()=>chart.applyOptions({width:$('chart').clientWidth})).observe($('chart'));
+draw();
+</script>
 </body>
 </html>
