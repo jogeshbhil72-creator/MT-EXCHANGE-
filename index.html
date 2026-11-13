@@ -118,6 +118,35 @@ footer{
   </div>
 </section>
 
+<!-- MT EXCHANGE DEMO CHART -->
+<div class="card">
+  <h2 class="gold">MARKET CHART</h2>
+
+  <select id="marketSelect" onchange="changeMarket()">
+    <option value="BTC/USD">BTC / USD</option>
+    <option value="ETH/USD">ETH / USD</option>
+    <option value="EUR/USD">EUR / USD</option>
+  </select>
+
+  <h2 id="chartPrice" class="gold">$65000.00</h2>
+
+  <canvas id="mtChart" width="600" height="240"
+  style="width:100%;background:#080808;border-radius:10px"></canvas>
+
+  <div style="display:flex;gap:10px;margin-top:15px">
+    <button onclick="demoTrade('BUY')" style="flex:1">BUY</button>
+    <button onclick="demoTrade('SELL')" class="secondary" style="flex:1">SELL</button>
+  </div>
+
+  <p class="small" id="tradeMessage">Demo simulation only</p>
+</div>
+
+<div class="card">
+  <h2 class="gold">DEMO ORDERS</h2>
+  <div id="orderHistory">No orders yet</div>
+</div>
+
+
 <!-- DASHBOARD -->
 <section id="dashboard" class="hidden">
 
@@ -232,7 +261,6 @@ function logout(){
   document.getElementById("login").classList.remove("hidden");
   document.getElementById("username").value="";
 }
-
 function comingSoon(){
   alert("Real Trading is not available. Demo mode only.");
 }
@@ -241,6 +269,99 @@ const savedName = localStorage.getItem("mt_demo_name");
 if(savedName){
   openDashboard(savedName);
 }
+// MT EXCHANGE DEMO CHART ENGINE
+
+const mtPrices = {
+  "BTC/USD": 65000,
+  "ETH/USD": 3200,
+  "EUR/USD": 1.08
+};
+
+let mtCurrentPrice = mtPrices["BTC/USD"];
+let mtOrders = [];
+
+function changeMarket() {
+  const market = document.getElementById("marketSelect").value;
+  mtCurrentPrice = mtPrices[market];
+  updateChartPrice();
+  drawMTChart();
+}
+
+function updateChartPrice() {
+  document.getElementById("chartPrice").textContent =
+    "$" + mtCurrentPrice.toFixed(2);
+}
+
+function drawMTChart() {
+  const canvas = document.getElementById("mtChart");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  let price = mtCurrentPrice;
+  const candles = [];
+
+  for (let i = 0; i < 30; i++) {
+    const open = price;
+    const close = open + (Math.random() - 0.5) * open * 0.003;
+    const high = Math.max(open, close) + open * 0.001;
+    const low = Math.min(open, close) - open * 0.001;
+    candles.push({open, close, high, low});
+    price = close;
+  }
+
+  const min = Math.min(...candles.map(c => c.low));
+  const max = Math.max(...candles.map(c => c.high));
+
+  candles.forEach((c, i) => {
+    const x = 10 + i * 19;
+    const y = v => 220 - ((v - min) / (max - min || 1)) * 190;
+    const green = c.close >= c.open;
+
+    ctx.strokeStyle = green ? "#35c982" : "#ff6262";
+    ctx.fillStyle = ctx.strokeStyle;
+
+    ctx.beginPath();
+    ctx.moveTo(x + 5, y(c.high));
+    ctx.lineTo(x + 5, y(c.low));
+    ctx.stroke();
+
+    ctx.fillRect(
+      x, y(Math.max(c.open, c.close)),
+      10, Math.max(2, Math.abs(y(c.open) - y(c.close)))
+    );
+  });
+}
+
+function demoTrade(side) {
+  const market = document.getElementById("marketSelect").value;
+  const message = document.getElementById("tradeMessage");
+
+  const order = {
+    side,
+    market,
+    price: mtCurrentPrice,
+    time: new Date().toLocaleTimeString()
+  };
+
+  mtOrders.unshift(order);
+
+  document.getElementById("orderHistory").innerHTML =
+    mtOrders.map(o =>
+      `<div class="market">
+        <span>${o.side} ${o.market}</span>
+        <span class="gold">$${o.price.toFixed(2)}</span>
+      </div>`
+    ).join("");
+
+  message.textContent =
+    side + " demo order recorded at $" + mtCurrentPrice.toFixed(2);
+}
+
+updateChartPrice();
+drawMTChart();
+
 </script>
 
 </body>
