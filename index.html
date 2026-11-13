@@ -1,368 +1,314 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MT EXCHANGE</title>
-
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:#090909;
-  color:#fff;
-  font-family:Arial,sans-serif;
-}
-header{
-  padding:20px;
-  background:#111;
-  border-bottom:1px solid #b58b35;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{color:#d9ad50;font-size:23px;font-weight:bold}
-.tag{color:#aaa;font-size:11px}
-.container{max-width:900px;margin:auto;padding:20px}
-h2{margin-bottom:15px}
-.card{
-  background:#151515;
-  border:1px solid #35302a;
-  border-radius:14px;
-  padding:20px;
-  margin-bottom:18px;
-}
-.gold{color:#d9ad50}
-input{
-  width:100%;
-  padding:14px;
-  margin:12px 0;
-  background:#080808;
-  color:white;
-  border:1px solid #555;
-  border-radius:8px;
-}
-button{
-  padding:13px 18px;
-  border:0;
-  border-radius:8px;
-  background:#d9ad50;
-  color:#111;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:active{opacity:.7}
-.full{width:100%}
-.secondary{
-  background:#252525;
-  color:#ddd;
-  border:1px solid #555;
-}
-.market{
-  display:flex;
-  justify-content:space-between;
-  padding:15px 0;
-  border-bottom:1px solid #333;
-  gap:10px;
-}
-.green{color:#35c982}
-.red{color:#ff6262}
-.hidden{display:none}
-.small{color:#aaa;font-size:13px;margin-top:8px}
-nav{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
-nav button{flex:1;min-width:100px}
-footer{
-  text-align:center;
-  padding:25px;
-  color:#777;
-  font-size:12px;
-}
+:root{--bg:#080a0e;--panel:#11151d;--line:#252c38;--gold:#e6b84a;--muted:#8992a2;--green:#20c78a;--red:#ff5b68}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f4f5f7;font-family:Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{height:60px;padding:0 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;background:#0b0e14;position:sticky;top:0;z-index:5}
+.logo{font-size:21px;font-weight:900;color:var(--gold);letter-spacing:1px}
+.pill{border:1px solid #5c4920;color:var(--gold);border-radius:20px;padding:7px 10px;font-size:11px}
+main{max-width:1100px;margin:auto;padding:14px 12px 85px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px;margin-bottom:12px}
+h2{font-size:15px;margin:0 0 13px}
+.muted{color:var(--muted);font-size:12px}
+.gold{color:var(--gold)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:#0c1017;border:1px solid var(--line);padding:12px;border-radius:10px}
+.stat strong{display:block;font-size:19px;margin-top:7px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0b0e14;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 2px;z-index:10}
+nav button{background:none;border:0;color:var(--muted);font-size:11px;padding:5px}
+nav button.active{color:var(--gold)}
+.page{display:none}.page.active{display:block}
+select,input{background:#0b1018;color:white;border:1px solid #303847;border-radius:8px;padding:11px;width:100%;outline:none}
+button.primary{background:var(--gold);color:#17130a;border:0;border-radius:8px;padding:12px;font-weight:bold}
+button.secondary{background:#202735;color:#fff;border:1px solid #343e4e;border-radius:8px;padding:10px}
+button.buy{background:#087d5b;color:white;border:0;border-radius:8px;padding:13px;font-weight:bold;width:100%}
+button.sell{background:#a52c3a;color:white;border:0;border-radius:8px;padding:13px;font-weight:bold;width:100%}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+td,th{text-align:left;padding:10px 5px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:normal}
+#chart{width:100%;height:220px;display:block;background:#0b1018;border-radius:9px}
+.market-row{display:flex;justify-content:space-between;padding:12px 2px;border-bottom:1px solid var(--line);font-size:13px}
+.green{color:var(--green)}.red{color:var(--red)}
+.notice{padding:10px;border-radius:8px;background:#241e10;color:#e9c76e;font-size:12px;line-height:1.5}
+.login{max-width:420px;margin:12vh auto;padding:18px}
+.login .primary{width:100%;margin-top:12px}
+.hidden{display:none!important}
+.smallbtn{padding:7px 10px;font-size:11px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}.layout{display:grid;grid-template-columns:1.5fr 1fr;gap:12px}.layout .card{margin-bottom:0}.layout{margin-bottom:12px}}
 </style>
 </head>
-
 <body>
-
 <header>
-  <div>
-    <div class="logo">MT EXCHANGE</div>
-    <div class="tag">YOUR DEMO TRADING PLATFORM</div>
-  </div>
-  <div class="gold">V1.0</div>
+ <div class="logo">MT EXCHANGE</div>
+ <div class="row"><span class="pill">DEMO MODE</span><button class="secondary smallbtn" onclick="logout()">Logout</button></div>
 </header>
 
-<main class="container">
+<section id="login" class="login">
+ <div class="card">
+  <div class="logo" style="font-size:28px">MT EXCHANGE</div>
+  <p class="muted">Your demo trading workspace</p>
+  <div class="notice">यह केवल अभ्यास के लिए Demo Platform है। सभी कीमतें और ट्रेड काल्पनिक हैं।</div>
+  <p class="muted">अपना नाम लिखें</p>
+  <input id="username" placeholder="आपका नाम">
+  <button class="primary" onclick="login()">ENTER DEMO</button>
+ </div>
+</section>
 
-<!-- LOGIN -->
-<section id="login">
+<main id="app" class="hidden">
+ <section id="home" class="page active">
+  <div class="row" style="margin-bottom:12px">
+   <div><div class="muted">Welcome back</div><strong id="welcome">Trader</strong></div>
+   <span class="pill">SIMULATED MARKET</span>
+  </div>
+  <div class="grid">
+   <div class="stat"><span class="muted">Demo Balance</span><strong id="balance">$10,000.00</strong></div>
+   <div class="stat"><span class="muted">Open Positions</span><strong id="positionCount">0</strong></div>
+   <div class="stat"><span class="muted">Unrealized P/L</span><strong id="totalPL">$0.00</strong></div>
+   <div class="stat"><span class="muted">Demo Equity</span><strong id="equity">$10,000.00</strong></div>
+  </div>
+  <div class="layout" style="margin-top:12px">
+   <div class="card">
+    <div class="row"><h2>Market Chart</h2><span class="pill">DEMO LIVE</span></div>
+    <select id="market" onchange="changeMarket()">
+     <option>BTC/USD</option><option>ETH/USD</option><option>SOL/USD</option>
+     <option>EUR/USD</option><option>GBP/USD</option><option>USD/JPY</option>
+    </select>
+    <div class="row" style="margin:12px 0"><strong id="price" class="gold">$65,000.00</strong><span id="change" class="green">+0.00%</span></div>
+    <canvas id="chart"></canvas>
+    <p class="muted">काल्पनिक कीमतें, अभ्यास के लिए। वास्तविक बाजार डेटा नहीं।</p>
+   </div>
+   <div class="card">
+    <h2>Place Demo Order</h2>
+    <div class="muted">Market</div>
+    <div id="selectedMarket" class="gold" style="margin:5px 0 12px">BTC/USD</div>
+    <div class="muted">Order Type</div>
+    <select id="orderType"><option value="Market">Market</option><option value="Limit">Limit</option></select>
+    <div class="muted" style="margin-top:10px">Quantity</div>
+    <input id="quantity" type="number" min="0.0001" step="0.0001" value="0.01">
+    <div class="muted" style="margin-top:10px">Limit Price (Limit order के लिए)</div>
+    <input id="limitPrice" type="number" placeholder="Optional limit price">
+    <div class="actions">
+     <button class="buy" onclick="trade('BUY')">BUY</button>
+     <button class="sell" onclick="trade('SELL')">SELL</button>
+    </div>
+    <p id="tradeMessage" class="muted">Demo order यहाँ दिखाई देगा।</p>
+   </div>
+  </div>
+  <div class="card"><h2>Market Watch</h2><div id="marketWatch"></div></div>
+ </section>
+
+ <section id="markets" class="page">
+  <div class="card"><h2>All Markets</h2><div id="allMarkets"></div></div>
+ </section>
+
+ <section id="positions" class="page">
+  <div class="card"><h2>Open Positions</h2><div id="positionsList" class="muted">अभी कोई खुली position नहीं है।</div></div>
+ </section>
+
+ <section id="orders" class="page">
+  <div class="card"><h2>Order History</h2><div id="ordersList" class="muted">अभी कोई order नहीं है।</div></div>
+ </section>
+
+ <section id="wallet" class="page">
   <div class="card">
-    <h2 class="gold">Welcome to MT EXCHANGE</h2>
-    <p class="small">Create your demo profile to get started.</p>
-
-    <input id="username" placeholder="Enter your name">
-    <button class="full" onclick="login()">ENTER DEMO</button>
-
-    <div style="height:18px"></div>
-
-    <button class="full secondary" onclick="comingSoon()">
-      REAL TRADING · COMING SOON
-    </button>
-
-    <p class="small">
-      Demo only. No real money or actual trades.
-    </p>
+   <h2>Demo Wallet</h2>
+   <div class="muted">Available Demo Balance</div>
+   <strong id="walletBalance" class="gold" style="font-size:27px">$10,000.00</strong>
+   <p class="notice">यह नकली अभ्यास बैलेंस है। Deposit और Withdrawal उपलब्ध नहीं हैं।</p>
+   <button class="secondary" onclick="resetDemo()">Reset Demo Account</button>
   </div>
-</section>
+ </section>
 
-<!-- MT EXCHANGE DEMO CHART -->
-<div class="card">
-  <h2 class="gold">MARKET CHART</h2>
-
-  <select id="marketSelect" onchange="changeMarket()">
-    <option value="BTC/USD">BTC / USD</option>
-    <option value="ETH/USD">ETH / USD</option>
-    <option value="EUR/USD">EUR / USD</option>
-  </select>
-
-  <h2 id="chartPrice" class="gold">$65000.00</h2>
-
-  <canvas id="mtChart" width="600" height="240"
-  style="width:100%;background:#080808;border-radius:10px"></canvas>
-
-  <div style="display:flex;gap:10px;margin-top:15px">
-    <button onclick="demoTrade('BUY')" style="flex:1">BUY</button>
-    <button onclick="demoTrade('SELL')" class="secondary" style="flex:1">SELL</button>
+ <section id="account" class="page">
+  <div class="card">
+   <h2>Account</h2><p id="accountName" class="gold"></p>
+   <p class="muted">Account type: Demo Practice</p>
+   <p class="muted">Platform: MT EXCHANGE</p>
+   <div class="notice">Real Mode अभी उपलब्ध नहीं है। इस वेबसाइट में वास्तविक पैसे, जमा, निकासी या असली ट्रेडिंग की सुविधा नहीं है।</div>
   </div>
-
-  <p class="small" id="tradeMessage">Demo simulation only</p>
-</div>
-
-<div class="card">
-  <h2 class="gold">DEMO ORDERS</h2>
-  <div id="orderHistory">No orders yet</div>
-</div>
-
-
-<!-- DASHBOARD -->
-<section id="dashboard" class="hidden">
-
-  <h2>Welcome, <span id="displayName" class="gold"></span></h2>
-
-  <nav>
-    <button onclick="showPage('home')">Dashboard</button>
-    <button onclick="showPage('markets')">Markets</button>
-    <button onclick="showPage('wallet')">Wallet</button>
-    <button class="secondary" onclick="logout()">Logout</button>
-  </nav>
-
-  <div id="home" class="page">
-    <div class="card">
-      <p class="small">DEMO WALLET BALANCE</p>
-      <h1 class="gold" id="balance">10,000.00</h1>
-      <p class="small">Virtual USD balance</p>
-    </div>
-
-    <div class="card">
-      <h2>Market Overview</h2>
-      <div class="market">
-        <span>BTC / USD</span>
-        <span class="green">Demo Market</span>
-      </div>
-      <div class="market">
-        <span>ETH / USD</span>
-        <span class="green">Demo Market</span>
-      </div>
-      <div class="market">
-        <span>EUR / USD</span>
-        <span class="green">Demo Market</span>
-      </div>
-      <div class="market">
-        <span>GBP / USD</span>
-        <span class="green">Demo Market</span>
-      </div>
-    </div>
-  </div>
-
-  <div id="markets" class="page hidden">
-    <div class="card">
-      <h2 class="gold">Crypto Markets</h2>
-      <div class="market"><span>Bitcoin</span><span>BTC/USD</span></div>
-      <div class="market"><span>Ethereum</span><span>ETH/USD</span></div>
-      <div class="market"><span>Solana</span><span>SOL/USD</span></div>
-    </div>
-
-    <div class="card">
-      <h2 class="gold">Forex Markets</h2>
-      <div class="market"><span>Euro / US Dollar</span><span>EUR/USD</span></div>
-      <div class="market"><span>British Pound / US Dollar</span><span>GBP/USD</span></div>
-      <div class="market"><span>US Dollar / Japanese Yen</span><span>USD/JPY</span></div>
-    </div>
-  </div>
-
-  <div id="wallet" class="page hidden">
-    <div class="card">
-      <h2 class="gold">Demo Wallet</h2>
-      <p class="small">Your virtual practice balance</p>
-      <h1 id="walletBalance" class="gold">10,000.00 USD</h1>
-      <p class="small">This balance has no cash value.</p>
-    </div>
-  </div>
-
-</section>
+ </section>
 </main>
 
-<footer>
-  MT EXCHANGE © 2026 · DEMO SIMULATION ONLY
-</footer>
+<nav id="bottomNav" class="hidden">
+ <button class="active" onclick="showPage('home',this)">⌂<br>Home</button>
+ <button onclick="showPage('markets',this)">◈<br>Markets</button>
+ <button onclick="showPage('positions',this)">▤<br>Positions</button>
+ <button onclick="showPage('orders',this)">☷<br>Orders</button>
+ <button onclick="showPage('wallet',this)">▣<br>Wallet</button>
+ <button onclick="showPage('account',this)">●<br>Account</button>
+</nav>
 
 <script>
-let balance = 10000;
+const startingBalance=10000;
+const basePrices={"BTC/USD":65000,"ETH/USD":3200,"SOL/USD":145,"EUR/USD":1.08,"GBP/USD":1.27,"USD/JPY":150};
+let prices={...basePrices};
+let candles={};
+let balance=startingBalance;
+let orders=[];
+let positions=[];
+let user=localStorage.getItem("mt_user")||"";
+let activeMarket="BTC/USD";
+let lastPrices={...basePrices};
 
+function loadData(){
+ try{
+  balance=Number(localStorage.getItem("mt_balance"))||startingBalance;
+  orders=JSON.parse(localStorage.getItem("mt_orders")||"[]");
+  positions=JSON.parse(localStorage.getItem("mt_positions")||"[]");
+ }catch(e){balance=startingBalance;orders=[];positions=[]}
+}
+function saveData(){
+ localStorage.setItem("mt_balance",balance);
+ localStorage.setItem("mt_orders",JSON.stringify(orders));
+ localStorage.setItem("mt_positions",JSON.stringify(positions));
+}
 function login(){
-  const name = document.getElementById("username").value.trim();
-
-  if(!name){
-    alert("Please enter your name");
-    return;
-  }
-
-  localStorage.setItem("mt_demo_name",name);
-  openDashboard(name);
+ const name=document.getElementById("username").value.trim();
+ if(!name){alert("पहले अपना नाम लिखें");return}
+ user=name;localStorage.setItem("mt_user",user);startApp();
 }
-
-function openDashboard(name){
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  document.getElementById("displayName").textContent = name;
-  updateBalance();
+function startApp(){
+ document.getElementById("login").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ document.getElementById("bottomNav").classList.remove("hidden");
+ document.getElementById("welcome").textContent=user;
+ document.getElementById("accountName").textContent=user;
+ loadData();initCandles();renderAll();changeMarket();drawChart();
 }
-
-function showPage(page){
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.add("hidden");
-  });
-  document.getElementById(page).classList.remove("hidden");
-}
-
-function updateBalance(){
-  document.getElementById("balance").textContent =
-    balance.toLocaleString("en-US",{minimumFractionDigits:2});
-  document.getElementById("walletBalance").textContent =
-    balance.toLocaleString("en-US",{minimumFractionDigits:2})+" USD";
-}
-
 function logout(){
-  localStorage.removeItem("mt_demo_name");
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("login").classList.remove("hidden");
-  document.getElementById("username").value="";
+ localStorage.removeItem("mt_user");user="";
+ document.getElementById("app").classList.add("hidden");
+ document.getElementById("bottomNav").classList.add("hidden");
+ document.getElementById("login").classList.remove("hidden");
 }
-function comingSoon(){
-  alert("Real Trading is not available. Demo mode only.");
+function showPage(id,btn){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ if(id==="home")drawChart();
 }
-
-const savedName = localStorage.getItem("mt_demo_name");
-if(savedName){
-  openDashboard(savedName);
-}
-// MT EXCHANGE DEMO CHART ENGINE
-
-const mtPrices = {
-  "BTC/USD": 65000,
-  "ETH/USD": 3200,
-  "EUR/USD": 1.08
-};
-
-let mtCurrentPrice = mtPrices["BTC/USD"];
-let mtOrders = [];
-
-function changeMarket() {
-  const market = document.getElementById("marketSelect").value;
-  mtCurrentPrice = mtPrices[market];
-  updateChartPrice();
-  drawMTChart();
-}
-
-function updateChartPrice() {
-  document.getElementById("chartPrice").textContent =
-    "$" + mtCurrentPrice.toFixed(2);
-}
-
-function drawMTChart() {
-  const canvas = document.getElementById("mtChart");
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  let price = mtCurrentPrice;
-  const candles = [];
-
-  for (let i = 0; i < 30; i++) {
-    const open = price;
-    const close = open + (Math.random() - 0.5) * open * 0.003;
-    const high = Math.max(open, close) + open * 0.001;
-    const low = Math.min(open, close) - open * 0.001;
-    candles.push({open, close, high, low});
-    price = close;
+function money(n){return "$"+Number(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmtPrice(n){return n<10?n.toFixed(4):n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function initCandles(){
+ Object.keys(prices).forEach(symbol=>{
+  let p=prices[symbol];candles[symbol]=[];
+  for(let i=0;i<35;i++){
+   let o=p*(1+(Math.random()-.5)*.008);
+   let c=o*(1+(Math.random()-.5)*.004);
+   candles[symbol].push({o,h:Math.max(o,c)*1.002,l:Math.min(o,c)*.998,c});
   }
-
-  const min = Math.min(...candles.map(c => c.low));
-  const max = Math.max(...candles.map(c => c.high));
-
-  candles.forEach((c, i) => {
-    const x = 10 + i * 19;
-    const y = v => 220 - ((v - min) / (max - min || 1)) * 190;
-    const green = c.close >= c.open;
-
-    ctx.strokeStyle = green ? "#35c982" : "#ff6262";
-    ctx.fillStyle = ctx.strokeStyle;
-
-    ctx.beginPath();
-    ctx.moveTo(x + 5, y(c.high));
-    ctx.lineTo(x + 5, y(c.low));
-    ctx.stroke();
-
-    ctx.fillRect(
-      x, y(Math.max(c.open, c.close)),
-      10, Math.max(2, Math.abs(y(c.open) - y(c.close)))
-    );
-  });
+ });
 }
-
-function demoTrade(side) {
-  const market = document.getElementById("marketSelect").value;
-  const message = document.getElementById("tradeMessage");
-
-  const order = {
-    side,
-    market,
-    price: mtCurrentPrice,
-    time: new Date().toLocaleTimeString()
-  };
-
-  mtOrders.unshift(order);
-
-  document.getElementById("orderHistory").innerHTML =
-    mtOrders.map(o =>
-      `<div class="market">
-        <span>${o.side} ${o.market}</span>
-        <span class="gold">$${o.price.toFixed(2)}</span>
-      </div>`
-    ).join("");
-
-  message.textContent =
-    side + " demo order recorded at $" + mtCurrentPrice.toFixed(2);
+function changeMarket(){
+ activeMarket=document.getElementById("market").value;
+ document.getElementById("selectedMarket").textContent=activeMarket;
+ updatePriceDisplay();drawChart();
 }
-
-updateChartPrice();
-drawMTChart();
-
+function updatePriceDisplay(){
+ document.getElementById("price").textContent="$"+fmtPrice(prices[activeMarket]);
+ let pct=((prices[activeMarket]-basePrices[activeMarket])/basePrices[activeMarket])*100;
+ let el=document.getElementById("change");
+ el.textContent=(pct>=0?"+":"")+pct.toFixed(2)+"%";
+ el.className=pct>=0?"green":"red";
+}
+function tick(){
+ Object.keys(prices).forEach(s=>{
+  let old=prices[s],vol=s.includes("JPY")?.0007:s.includes("EUR")||s.includes("GBP")?.0005:.0018;
+  prices[s]=Math.max(.0001,old*(1+(Math.random()-.49)*vol));
+  let list=candles[s],last=list[list.length-1],close=prices[s];
+  last.c=close;last.h=Math.max(last.h,close);last.l=Math.min(last.l,close);
+  if(Math.random()>.78){
+   let open=close*(1+(Math.random()-.5)*vol);
+   list.push({o:open,h:Math.max(open,close),l:Math.min(open,close),c:close});
+   if(list.length>45)list.shift();
+  }
+ });
+ updatePriceDisplay();drawChart();renderAll();
+}
+function drawChart(){
+ const canvas=document.getElementById("chart");if(!canvas)return;
+ const rect=canvas.getBoundingClientRect();if(!rect.width)return;
+ const dpr=window.devicePixelRatio||1;
+ canvas.width=rect.width*dpr;canvas.height=220*dpr;
+ const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);
+ const w=rect.width,h=220;
+ ctx.clearRect(0,0,w,h);
+ const data=candles[activeMarket]||[];
+ if(!data.length)return;
+ let min=Math.min(...data.map(x=>x.l)),max=Math.max(...data.map(x=>x.h));
+ let pad=(max-min)*.12||1;min-=pad;max+=pad;
+ const y=v=>h-12-((v-min)/(max-min))*(h-24);
+ ctx.strokeStyle="#202938";ctx.lineWidth=1;
+ for(let i=1;i<5;i++){let yy=i*h/5;ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(w,yy);ctx.stroke()}
+ const step=w/data.length,cw=Math.max(3,step*.58);
+ data.forEach((c,i)=>{
+  let x=i*step+step/2,up=c.c>=c.o;
+  ctx.strokeStyle=up?"#20c78a":"#ff5b68";ctx.fillStyle=ctx.strokeStyle;
+  ctx.beginPath();ctx.moveTo(x,y(c.h));ctx.lineTo(x,y(c.l));ctx.stroke();
+  let top=y(Math.max(c.o,c.c)),bottom=y(Math.min(c.o,c.c));
+  ctx.fillRect(x-cw/2,top,cw,Math.max(2,bottom-top));
+ });
+}
+function trade(side){
+ let qty=Number(document.getElementById("quantity").value);
+ let type=document.getElementById("orderType").value;
+ let limit=Number(document.getElementById("limitPrice").value);
+ let price=type==="Limit"&&limit>0?limit:prices[activeMarket];
+ if(!Number.isFinite(qty)||qty<=0){message("सही quantity डालें");return}
+ if(type==="Limit"&&limit<=0){message("Limit order के लिए कीमत डालें");return}
+ let value=qty*price;
+ if(value>balance){message("Demo balance पर्याप्त नहीं है");return}
+ if(type==="Limit"&&Math.abs(price-prices[activeMarket])/prices[activeMarket]>.2){message("Limit price मौजूदा कीमत से बहुत अलग है");return}
+ balance-=value;
+ positions.push({id:Date.now(),symbol:activeMarket,side,qty,entry:price});
+ orders.unshift({time:new Date().toLocaleString(),symbol:activeMarket,side,qty,price,type});
+ saveData();renderAll();message(side+" demo order सफल: "+qty+" "+activeMarket);
+}
+function message(t){document.getElementById("tradeMessage").textContent=t}
+function closePosition(id){
+ let p=positions.find(x=>x.id===id);if(!p)return;
+ let current=prices[p.symbol];
+ let pnl=(current-p.entry)*p.qty*(p.side==="BUY"?1:-1);
+ balance+=p.qty*current+pnl;
+ orders.unshift({time:new Date().toLocaleString(),symbol:p.symbol,side:"CLOSE",qty:p.qty,price:current,type:"Close",pnl});
+ positions=positions.filter(x=>x.id!==id);
+ saveData();renderAll();
+}
+function resetDemo(){
+ if(!confirm("Demo balance और सभी orders reset करें?"))return;
+ balance=startingBalance;orders=[];positions=[];saveData();renderAll();
+}
+function renderAll(){
+ let pnl=positions.reduce((sum,p)=>sum+(prices[p.symbol]-p.entry)*p.qty*(p.side==="BUY"?1:-1),0);
+ document.getElementById("balance").textContent=money(balance);
+ document.getElementById("walletBalance").textContent=money(balance);
+ document.getElementById("positionCount").textContent=positions.length;
+ document.getElementById("totalPL").textContent=money(pnl);
+ document.getElementById("equity").textContent=money(balance+positions.reduce((s,p)=>s+p.qty*prices[p.symbol],0));
+ document.getElementById("marketWatch").innerHTML=Object.keys(prices).map(s=>marketHTML(s)).join("");
+ document.getElementById("allMarkets").innerHTML=Object.keys(prices).map(s=>marketHTML(s)).join("");
+ document.getElementById("positionsList").innerHTML=positions.length?`<table><tr><th>Market</th><th>Side</th><th>Qty</th><th>P/L</th><th></th></tr>${positions.map(p=>{let pl=(prices[p.symbol]-p.entry)*p.qty*(p.side==="BUY"?1:-1);return `<tr><td>${p.symbol}</td><td>${p.side}</td><td>${p.qty}</td><td class="${pl>=0?"green":"red"}">${money(pl)}</td><td><button class="secondary smallbtn" onclick="closePosition(${p.id})">Close</button></td></tr>`}).join("")}</table>`:"अभी कोई खुली position नहीं है।";
+ document.getElementById("ordersList").innerHTML=orders.length?`<table><tr><th>Time</th><th>Market</th><th>Side</th><th>Qty</th><th>Price</th></tr>${orders.slice(0,50).map(o=>`<tr><td>${o.time}</td><td>${o.symbol}</td><td>${o.side}</td><td>${o.qty}</td><td>${money(o.price)}</td></tr>`).join("")}</table>`:"अभी कोई order नहीं है।";
+ updatePriceDisplay();
+}
+function marketHTML(s){
+ let diff=prices[s]>=lastPrices[s];
+ return `<div class="market-row" onclick="document.getElementById('market').value='${s}';changeMarket();showPage('home',document.querySelector('nav button'))"><strong>${s}</strong><span>${fmtPrice(prices[s])}</span><span class="${diff?"green":"red"}">${diff?"▲":"▼"}</span></div>`;
+}
+window.addEventListener("resize",drawChart);
+if(user)startApp();
+setInterval(()=>{if(user)tick()},2000);
 </script>
-
 </body>
 </html>
