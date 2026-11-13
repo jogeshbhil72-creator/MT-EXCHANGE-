@@ -1,10 +1,10 @@
 
 :root {
   --bg: #080b12;
-  --panel: #111722;
+  --panel: #121a27;
   --gold: #e8bd62;
   --text: #f5f6fa;
-  --muted: #929bad;
+  --muted: #9aa5b5;
   --green: #20c987;
   --red: #ff5b68;
 }
@@ -19,25 +19,26 @@ html {
 
 body {
   margin: 0;
+  padding-bottom: 80px;
   background: var(--bg);
   color: var(--text);
   font-family: Arial, sans-serif;
-  padding-bottom: 85px;
 }
 
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 16px;
-  background: #0d121c;
-  border-bottom: 1px solid #252c38;
   position: sticky;
   top: 0;
   z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px;
+  background: #0d131e;
+  border-bottom: 1px solid #283142;
 }
 
 .brand {
+  color: white;
   font-weight: 900;
   letter-spacing: 1px;
 }
@@ -48,100 +49,148 @@ body {
 
 .demo-tag {
   color: var(--gold);
-  border: 1px solid #80652f;
+  border: 1px solid #82652d;
   padding: 7px 10px;
   border-radius: 20px;
   font-size: 10px;
-  font-weight: bold;
 }
 
-main {
-  width: min(100% - 28px, 760px);
+.container {
+  width: min(100% - 24px, 950px);
   margin: auto;
 }
 
-.hero {
-  padding: 38px 5px 22px;
+.welcome {
+  padding: 30px 5px;
 }
 
-.hero p {
+.welcome p,
+.panel p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 1px;
 }
 
-.hero h1 {
-  font-size: clamp(30px, 9vw, 48px);
-  margin: 12px 0;
-  font-weight: 900;
+.welcome h1 {
+  font-size: clamp(30px, 8vw, 48px);
 }
 
-.hero h1 span {
+.welcome h1 span {
   color: var(--gold);
 }
 
-.card {
-  background: linear-gradient(145deg, #151d2a, #0f141e);
-  border: 1px solid #283243;
-  border-radius: 17px;
-  padding: 20px;
+.panel {
+  background: linear-gradient(145deg, #172131, #101722);
+  border: 1px solid #293548;
+  border-radius: 16px;
+  padding: 18px;
   margin: 17px 0;
   box-shadow: 0 12px 30px #0005;
 }
 
-.card h2 {
-  font-size: 18px;
-  margin-top: 0;
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.balance {
-  border-color: #80652f;
-  background: linear-gradient(135deg, #302515, #151b25);
-}
-
-.balance p,
-.balance small {
-  color: #c4b28d;
-}
-
-.balance h2 {
+.panel h2 {
   color: var(--gold);
-  font-size: 32px;
-  overflow-wrap: anywhere;
 }
 
-input,
-select {
+.panel small {
+  color: var(--muted);
+}
+
+.market-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #30394a;
+}
+
+.market-row b {
+  color: var(--gold);
+}
+
+.chart-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+select,
+input {
   width: 100%;
-  padding: 14px;
-  margin: 9px 0 16px;
-  border: 1px solid #354155;
-  border-radius: 10px;
-  background: #090e17;
+  background: #080e18;
   color: white;
-  font-size: 15px;
+  border: 1px solid #39465a;
+  border-radius: 9px;
+  padding: 12px;
+}
+
+.timeframes,
+.chart-tools {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 14px 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.timeframes button,
+.chart-tools button {
+  flex: 0 0 auto;
+  background: #202b3c;
+  color: white;
+  border: 1px solid #39465a;
+  border-radius: 7px;
+  padding: 9px 12px;
+}
+
+.timeframes button.active,
+.chart-tools button.active {
+  background: var(--gold);
+  color: #111;
+}
+
+#trading-chart {
+  width: 100%;
+  height: 400px;
+}
+
+#chart-panel:fullscreen {
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+#chart-panel:fullscreen #trading-chart {
+  height: calc(100vh - 190px);
 }
 
 label {
   display: block;
-  color: #c2c9d4;
-  font-size: 13px;
+  color: var(--muted);
+  margin: 12px 0 5px;
 }
 
 .trade-actions {
   display: flex;
   gap: 12px;
+  margin-top: 15px;
 }
 
-button {
+.trade-actions button {
   flex: 1;
   border: 0;
-  border-radius: 10px;
   padding: 15px;
+  border-radius: 9px;
   color: white;
   font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
 }
 
 #buy-button {
@@ -152,30 +201,19 @@ button {
   background: var(--red);
 }
 
-button:active {
-  transform: scale(.97);
+#trade-message {
+  color: var(--gold);
 }
 
-#trading-chart {
-  width: 100%;
-  min-height: 360px;
-  margin-top: 15px;
-  overflow: hidden;
-}
-
-#market-list,
 #order-history {
   color: var(--muted);
-  line-height: 1.8;
 }
 
-.market-row,
 .order-row {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
   padding: 12px 0;
-  border-bottom: 1px solid #293141;
+  border-bottom: 1px solid #30394a;
 }
 
 .bottom-nav {
@@ -183,37 +221,35 @@ button:active {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 20;
   display: flex;
   justify-content: space-around;
   background: #101722;
   border-top: 1px solid #30394a;
-  padding: 17px 5px;
-  z-index: 20;
+  padding: 17px;
 }
 
 .bottom-nav a {
   color: var(--gold);
   text-decoration: none;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
 }
 
 footer {
   text-align: center;
-  padding: 28px 12px;
   color: var(--muted);
+  padding: 25px;
   font-size: 11px;
 }
 
-#trade-message {
-  color: var(--gold);
-  font-size: 13px;
-}
-
-@media (min-width: 700px) {
-  main {
-    padding-top: 15px;
+@media (max-width: 520px) {
+  .chart-heading {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  .hero {
-    padding-top: 55px;
+  .balance-grid {
+    grid-template-columns: 1fr;
+  }
+}
