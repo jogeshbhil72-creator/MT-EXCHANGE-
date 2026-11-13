@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b12">
+  <meta name="description" content="MT EXCHANGE Trading Platform">
+  <title>MT EXCHANGE</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span>MT</span> EXCHANGE</div>
+    <span class="demo-tag">DEMO ACCOUNT</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p>WELCOME TO YOUR TRADING WORLD</p>
+      <h1>TRADE <span>SMARTER.</span></h1>
+      <p>Explore global markets with MT EXCHANGE.</p>
+    </section>
+
+    <section class="balance card">
+      <p>DEMO WALLET BALANCE</p>
+      <h2 id="wallet-balance">$10,000.00</h2>
+      <small>Virtual funds only · No real money</small>
+    </section>
+
+    <section class="card">
+      <h2>Market Watch</h2>
+      <div id="market-list">Loading markets...</div>
+    </section>
+
+    <section class="card">
+      <h2>Live Chart</h2>
+      <select id="chart-symbol" aria-label="Chart market">
+        <option value="BINANCE:BTCUSDT">Bitcoin / USDT</option>
+        <option value="BINANCE:ETHUSDT">Ethereum / USDT</option>
+        <option value="FX:EURUSD">EUR / USD</option>
+        <option value="OANDA:XAUUSD">Gold</option>
+      </select>
+      <div id="trading-chart"></div>
+    </section>
+
+    <section class="card">
+      <h2>Demo Trading</h2>
+      <form id="trade-form">
+        <label for="trade-symbol">Select Market</label>
+        <select id="trade-symbol">
+          <option value="BTC/USDT">BTC / USDT</option>
+          <option value="ETH/USDT">ETH / USDT</option>
+          <option value="EUR/USD">EUR / USD</option>
+          <option value="XAU/USD">GOLD</option>
+        </select>
+
+        <label for="trade-quantity">Quantity</label>
+        <input id="trade-quantity" type="number"
+          min="0.0001" step="0.0001"
+          placeholder="Enter quantity" required>
+
+        <div class="trade-actions">
+          <button type="button" id="buy-button">BUY</button>
+          <button type="button" id="sell-button">SELL</button>
+        </div>
+        <p id="trade-message" role="status"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Order History</h2>
+      <div id="order-history">No demo orders yet.</div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="#">Home</a>
+    <a href="#market-list">Markets</a>
+    <a href="#trading-chart">Chart</a>
+    <a href="#trade-form">Trade</a>
+  </nav>
+
+  <footer>
+    MT EXCHANGE © 2026
+    <p>Practice platform. No real orders are executed.</p>
+  </footer>
+</body>
+</html>
