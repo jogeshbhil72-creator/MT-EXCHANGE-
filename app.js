@@ -9,7 +9,7 @@ const STORAGE_KEY = "mt_exchange_demo_v1";
 const markets = [
   { symbol: "BTC/USDT", name: "Bitcoin", price: 67500, change: 2.45 },
   { symbol: "ETH/USDT", name: "Ethereum", price: 3520, change: 1.82 },
-  { symbol: "EUR/USD", name: "Euro / US Dollar", price: 1.085, change: -0.35 },
+  { symbol: "EUR/USD name: "Euro / US Dollar", price: 1.085, change: -0.35 },
   { symbol: "XAU/USD", name: "Gold", price: 2680, change: 0.72 }
 ];
 
