@@ -14,6 +14,58 @@
   <header class="topbar">
     <div class="brand"><span>MT</span> EXCHANGE</div>
     <span class="demo-tag">DEMO ACCOUNT</span>
+<div id="authScreen" style="
+position:fixed;inset:0;z-index:9999;
+background:#080d18;display:none;
+align-items:center;justify-content:center;
+padding:20px;font-family:Arial">
+ <div style="
+ width:100%;max-width:420px;
+ background:#101a2b;border:1px solid #26354c;
+ border-radius:16px;padding:30px">
+  <h2 style="color:#25d6a0;text-align:center">
+   MT <span style="color:white">EXCHANGE</span>
+  </h2>
+  <p style="color:#8998b1;text-align:center;margin:15px 0 25px">
+   Welcome to your trading account
+  </p>
+  <div style="display:flex;gap:10px;margin-bottom:20px">
+   <button onclick="showLogin()" style="flex:1;background:#25d6a0;color:#06140f">Login</button>
+   <button onclick="showSignup()" style="flex:1;background:#26354c;color:white">Sign Up</button>
+  </div>
+  <div id="loginForm">
+   <input placeholder="Email address" type="email" style="width:100%;padding:14px;margin-bottom:12px;background:#080d18;border:1px solid #26354c;color:white;border-radius:7px">
+   <input placeholder="Password" type="password" style="width:100%;padding:14px;margin-bottom:15px;background:#080d18;border:1px solid #26354c;color:white;border-radius:7px">
+   <button onclick="alert('Demo login only. Authentication is not connected yet.')" style="width:100%;background:#25d6a0;color:#06140f">Login to Account</button>
+  </div>
+  <div id="signupForm" style="display:none">
+   <input placeholder="Full name" style="width:100%;padding:14px;margin-bottom:12px;background:#080d18;border:1px solid #26354c;color:white;border-radius:7px">
+   <input placeholder="Email address" type="email" style="width:100%;padding:14px;margin-bottom:12px;background:#080d18;border:1px solid #26354c;color:white;border-radius:7px">
+   <input placeholder="Create password" type="password" style="width:100%;padding:14px;margin-bottom:15px;background:#080d18;border:1px solid #26354c;color:white;border-radius:7px">
+   <button onclick="alert('Demo signup only. Account creation is not connected yet.')" style="width:100%;background:#25d6a0;color:#06140f">Create Account</button>
+  </div>
+  <button onclick="closeAuth()" style="width:100%;margin-top:15px;background:transparent;color:#aab6ca">Back to Dashboard</button>
+  <p style="color:#8290a8;font-size:11px;text-align:center;margin-top:15px">Demo interface · No real account is created</p>
+ </div>
+</div>
+<script>
+function showLogin(){
+ document.getElementById('loginForm').style.display='block';
+ document.getElementById('signupForm').style.display='none';
+}
+function showSignup(){
+ document.getElementById('loginForm').style.display='none';
+ document.getElementById('signupForm').style.display='block';
+}
+function closeAuth(){
+ document.getElementById('authScreen').style.display='none';
+}
+document.querySelector('.login').onclick=function(){
+ document.getElementById('authScreen').style.display='flex';
+ showLogin();
+};
+</script>
+
   </header>
 
   <main>
